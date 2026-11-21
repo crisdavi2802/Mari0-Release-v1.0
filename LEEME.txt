@@ -1,0 +1,35 @@
+MARI0 RELEASE v1.0 - LEO PRIMERO
+================================
+
+App ID del Flatpak: io.github.crisdavi2802.Mari0Config
+
+Motivo del proyecto: evitar snap innecesario en una laptop con poca RAM.
+  Los snaps son mas lentos y pesados en ese equipo: Chrome se instalo
+  desde .deb en vez del snap, y Mari0 se empaqueta como .deb y Flatpak
+  por el mismo motivo.
+
+Para publicar en GitHub:
+  1. Sube "Mari0-Documentacion-GitHub" como un repositorio.
+  2. Sube "Mari0-Codigo-Auditoria" como otro repositorio (o como carpeta del anterior).
+  3. Crea un Release y adjunta:
+       - Releases/mari0-configurado_1.6.3-1_all.deb
+       - Mari0-configurado.flatpak (recompilado con el App ID actual)
+  4. Pega el contenido de RELEASE_NOTES.md como descripcion del release.
+
+Compilar e instalar en Xubuntu/Linux:
+  cd Mari0-Documentacion-GitHub/codigo/scripts
+  chmod +x compilar.sh verificar.sh
+  ./compilar.sh --regenerar
+  flatpak --user install --assumeyes ../../bundles/Mari0-configurado.flatpak
+  flatpak run io.github.crisdavi2802.Mari0Config
+
+Verificar integridad (tres archivos):
+  sha256sum -c CHECKSUMS.sha256
+  (cd Mari0-Documentacion-GitHub && sha256sum -c CHECKSUMS.sha256)
+  (cd Mari0-Codigo-Auditoria && sha256sum -c CHECKSUMS.sha256)
+
+Controles: flechas, Espacio saltar, E portal, Shift correr, F11 pantalla completa.
+
+No hay contraseñas, tokens, SSID ni datos personales en texto, scripts, manifiestos ni binarios.
+El bundle .flatpak incluido usa el App ID actual.
+Se conservan los creditos de terceros (Mari0, LÖVE, LUBE, MiddleClass).

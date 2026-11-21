@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Mari0 (configurado)
+Comment=Mari0 con flechas y pantalla completa
+Exec=mari0
+Icon=io.github.crisdavi2802.Mari0Config
+Terminal=false
+Categories=Game;

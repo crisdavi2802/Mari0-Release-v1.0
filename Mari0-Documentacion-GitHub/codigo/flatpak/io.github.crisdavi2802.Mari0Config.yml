@@ -1,0 +1,50 @@
+app-id: io.github.crisdavi2802.Mari0Config
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: mari0
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  - --socket=pulseaudio
+
+modules:
+  # LÖVE 11.5 tomado del AppImage oficial (binario + librerias).
+  # Se usa el binario para no compilar glslang (30+ min en 2 nucleos).
+  - name: love
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/love-app
+      - cp -a bin lib /app/lib/love-app/
+      - install -Dm755 love-wrapper /app/bin/love
+    sources:
+      - type: archive
+        path: love-app.tar.gz
+        sha256: 18375f102eed09d26244f6e12bc133293e5daafcbbba2a1f0e33fd8c553e525b
+      - type: file
+        path: love-wrapper
+        sha256: df5408a001842f53dd24f3956833e5f0de66fe9f5125eee9ef2f2360abdd912d
+
+  # Mari0 1.6.3 con los 4 parches de codigo/parches aplicados.
+  - name: mari0
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/mari0
+      - cp -a . /app/share/mari0/
+      - rm -f /app/share/mari0/mari0-wrapper /app/share/mari0/mari0.desktop
+      - install -Dm755 mari0-wrapper /app/bin/mari0
+      - install -Dm644 mari0.desktop /app/share/applications/io.github.crisdavi2802.Mari0Config.desktop
+      - install -Dm644 graphics/icon.png /app/share/icons/hicolor/256x256/apps/io.github.crisdavi2802.Mari0Config.png
+    sources:
+      - type: archive
+        path: mari0-configured.tar.gz
+        sha256: fbf763aa0f1a0fd67894b896965fac9a5af41d5cb8ad86cce565801e0d9c06f8
+      - type: file
+        path: mari0-wrapper
+        sha256: 2143f858a4dee9f6ddd1bb7d4afec9cc5708d3aa901f6c63a777f8a7ae175e2f
+      - type: file
+        path: mari0.desktop
+        sha256: 45d04177059c95a0159517f786a8e215cc68d2f0d0ba9372cbbc8a52020b0db1

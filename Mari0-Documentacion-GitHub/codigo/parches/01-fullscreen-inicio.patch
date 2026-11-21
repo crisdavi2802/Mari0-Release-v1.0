@@ -1,0 +1,12 @@
+# Arranca en pantalla completa
+--- a/main.lua
++++ b/main.lua
+@@ -44,7 +44,7 @@
+ 
+ 	saveconfig()
+ 	width = 25
+-	fullscreen = false
++	fullscreen = true -- iniciar en pantalla completa
+ 	if isweb then
+ 		scale = webscale()
+ 	end

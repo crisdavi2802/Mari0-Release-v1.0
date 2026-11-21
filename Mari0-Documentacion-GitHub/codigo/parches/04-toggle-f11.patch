@@ -1,0 +1,20 @@
+# Tecla F11 para alternar pantalla completa
+--- a/main.lua
++++ b/main.lua
+@@ -1311,6 +1311,16 @@
+ 		end
+ 	end
+ 
++	if key == "f11" then
++		fullscreen = not fullscreen
++		if fullscreen then
++			changescale(scale, true)
++		else
++			changescale(2, false)
++		end
++		return
++	end
++
+ 	if key == "f12" then
+ 		love.mouse.setGrabbed(not love.mouse.isGrabbed())
+ 	end

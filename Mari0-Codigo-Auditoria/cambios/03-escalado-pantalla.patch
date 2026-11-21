@@ -1,0 +1,27 @@
+# Escalado dinamico para llenar la pantalla
+--- a/main.lua
++++ b/main.lua
+@@ -1252,17 +1252,16 @@
+ end
+ 
+ function changescale(s, fullscreen)
+-	scale = s
+-
+ 	if fullscreen then
+-		fullscreen = true
+-		scale = 2
+-		love.window.setMode(800, 600, {fullscreen=fullscreen, vsync=vsync})
++		local dw, dh = love.window.getDesktopDimensions()
++		scale = math.min(dw/(width*16), dh/224)
++		love.window.setMode(dw, dh, {fullscreen=true, vsync=vsync})
++	else
++		scale = s
++		love.window.setMode(width*16*scale, 224*scale, {fullscreen=false, vsync=vsync})
+ 	end
+ 
+ 	uispace = math.floor(width*16*scale/4)
+-	love.window.setMode(width*16*scale, 224*scale, {fullscreen=fullscreen, vsync=vsync}) --27x14 blocks (15 blocks actual height)
+-
+ 	gamewidth = love.graphics.getWidth()
+ 	gameheight = love.graphics.getHeight()
+ 

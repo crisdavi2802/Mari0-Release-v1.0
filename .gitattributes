@@ -1,0 +1,2 @@
+# No convertir finales de línea: los CHECKSUMS.sha256 se validan byte a byte.
+* -text

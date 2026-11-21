@@ -1,0 +1,42 @@
+name: Create Artifacts
+on:
+  release:
+    types:
+      - created
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        path: main
+        submodules: true
+      name: Checkout Repository
+    - uses: actions/setup-python@v7
+      with:
+        python-version: '3.x'
+      name: Set Up Python # the system Python on current runners refuses "pip install"
+    - name: Extract Metadata
+      id: metadata
+      run: python3 main/_DO_NOT_INCLUDE/extract-metadata.py ${{ github.ref }}
+    - name: Add Universe Repository
+      run: sudo add-apt-repository universe
+    - name: Update Packages
+      run: sudo apt-get update
+    - name: Install Dependencies
+      run: sudo apt-get install --assume-yes wine-stable wine64 python3-pip libfuse2
+    - name: Install makelove
+      run: pip3 install git+https://github.com/pfirsich/makelove/
+    - name: Build
+      run: |
+        cd main
+        python3 -m makelove --version-name ${{ steps.metadata.outputs.version }}
+        cd ..
+    - name: Rename AppImage # for consistency with every other built artifact
+      run: mv main/makelove-build/${{ steps.metadata.outputs.version }}/appimage/${{ steps.metadata.outputs.id }}.AppImage main/makelove-build/${{ steps.metadata.outputs.version }}/appimage/${{ steps.metadata.outputs.id }}-linux.AppImage
+    - name: Upload Release Assets
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: main/makelove-build/${{ steps.metadata.outputs.version }}/**/*
+        file_glob: true
